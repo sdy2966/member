@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import co.sung.main.common.Command;
 import co.sung.main.main.MainCommand;
 import co.sung.main.member.web.MemberList;
+import co.sung.main.member.web.MemberLogin;
+import co.sung.main.member.web.MemberLoginForm;
 import co.sung.main.member.web.MemberRegister;
 
 /**
@@ -42,6 +44,8 @@ public class FrontController extends HttpServlet {
 		map.put("/main.do", new MainCommand()); //main.jsp동작.
 		map.put("/memberList.do", new MemberList()); // 회원먹록 가져오기
 		map.put("/memberRegister.do", new MemberRegister());// 회원등록
+		map.put("/memberLoginForm.do", new MemberLoginForm()); //회원 로그인 폼 호출
+		map.put("/memberLogin.do", new MemberLogin());// 로그인프로세스처리
 	}
 	
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

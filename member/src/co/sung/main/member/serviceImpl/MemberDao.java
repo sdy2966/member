@@ -48,9 +48,27 @@ public class MemberDao implements MemberService {
 	}
 
 	@Override
-	public MemberVO memberSelect(MemberVO vo) {
-		// TODO Auto-generated method stub
-		return null;
+	public MemberVO memberSelect(MemberVO vo) { 
+		// TODO 한명 데이터 검색
+		String sql = "select * from member where memberid = ?";
+		 try {
+			 conn = dataSource.getConnection();
+			 psmt = conn.prepareStatement(sql);
+			 psmt.setString(1, vo.getMemberId());
+			 rs = psmt.executeQuery();
+			 while(rs.next()) {
+				 vo.setMemberName(rs.getString("membername"));
+				 vo.setMemberPassword(rs.getString("memberpassword"));
+				 vo.setMemberAddress(rs.getString("memberaddress"));
+			 }
+			 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		
+		return vo;
 	}
 
 	@Override
@@ -97,6 +115,29 @@ public class MemberDao implements MemberService {
 		}
 		return n;
 	}
+	
+	public MemberVO memberLoginCheck(MemberVO vo) {
+		// 로그인 처리 과정
+		String sql = "select * from member where memberid = ? and memberpassord = ?";
+		 try {
+			 conn = dataSource.getConnection();
+			 psmt = conn.prepareStatement(sql);
+			 psmt.setString(1, vo.getMemberId());
+			 psmt.setString(2, vo.getMemberPassword());
+			 rs = psmt.executeQuery();
+			 if(rs.next()) {
+				 vo.setMemberName(rs.getString("membername"));
+				 vo.setMemberAddress(rs.getString("memberaddress"));
+			 }
+			 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return vo;
+	}
+	
 	private void close() {
 		try {
 			if(rs != null) rs.close();
